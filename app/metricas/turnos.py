@@ -1,4 +1,4 @@
-from conexion import conexion
+from app.metricas.conexion import conexion
 
 #@app.get('/metricas/turnos')
 def turnos_mas_utilizados():

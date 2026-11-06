@@ -1,4 +1,4 @@
-from conexion import conexion
+from app.metricas.conexion import conexion
 
 #@app.get('/metricas/jugadores_sin_plantilla')
 def jugadores_sin_plantilla(id_torneo: int):

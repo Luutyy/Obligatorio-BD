@@ -1,10 +1,10 @@
-import torneo;
-import equipo;
-import jugadores;
-import turnos
-import canchas
-import goles
-import puntos
+import app.metricas.torneo as torneo;
+import app.metricas.equipo as equipo;
+import app.metricas.jugadores as jugadores;
+import app.metricas.turnos as turnos
+import app.metricas.canchas as canchas
+import app.metricas.goles as goles
+import app.metricas.puntos as puntos
 
 porcentaje_partidas = torneo.porcentaje_partidos(1)
 cantidad_sanciones = equipo.cantidad_sanciones(1)
@@ -18,6 +18,7 @@ canchas_mas_usadas = canchas.canchas_mas_usadas()
 tabla_torneo = puntos.tabla_torneo(1)
 ultima_fecha = torneo.partidos_ultima_fecha(1)
 goles_a_favor = equipo.goles_a_favor(1)
+promedio_goles_por_equipo = equipo.promedio_por_equipo(1)
 
 #print(porcentaje_partidas)
 #print(f"Total: {porcentaje_partidas['total']}")
@@ -39,4 +40,5 @@ goles_a_favor = equipo.goles_a_favor(1)
 #print(canchas_mas_usadas)
 #print(tabla_torneo)
 #print(ultima_fecha)
-print(goles_a_favor)
+#print(goles_a_favor)
+print(promedio_goles_por_equipo)

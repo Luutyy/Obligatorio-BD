@@ -964,3 +964,16 @@ INSERT INTO tarjeta (id_tarjeta, id_partido, ci_jugador, minuto, color) VALUES
 
 UPDATE partido SET estado = 'jugado' WHERE id_partido BETWEEN 1 AND 9;
 UPDATE torneo SET estado = 'en curso' WHERE id_torneo = 1;
+
+
+CREATE USER IF NOT EXISTS 'admin_app'@'%' IDENTIFIED BY 'admin_pass';
+CREATE USER IF NOT EXISTS 'planillero_app'@'%' IDENTIFIED BY 'planillero_pass';
+CREATE USER IF NOT EXISTS 'lector_app'@'%' IDENTIFIED BY 'lector_pass';
+GRANT SELECT ON torneo.* TO 'lector_app'@'%';
+GRANT ALL PRIVILEGES ON torneo.* TO 'admin_app'@'%';
+
+GRANT SELECT ON torneo.* TO 'planillero_app'@'%';
+GRANT INSERT, UPDATE, DELETE ON torneo.planilla_partido TO 'planillero_app'@'%';
+GRANT INSERT, UPDATE, DELETE ON torneo.gol TO 'planillero_app'@'%';
+GRANT INSERT, UPDATE, DELETE ON torneo.tarjeta TO 'planillero_app'@'%';
+FLUSH PRIVILEGES;

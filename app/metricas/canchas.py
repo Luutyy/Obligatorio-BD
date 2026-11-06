@@ -1,4 +1,4 @@
-from conexion import conexion
+from app.metricas.conexion import conexion
 
 #@app.get('/metricas/canchas')
 def canchas_mas_usadas():

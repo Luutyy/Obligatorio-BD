@@ -1,4 +1,4 @@
-from conexion import conexion
+from app.metricas.conexion import conexion
 
 #@app.get('/metricas/cantidad_sanciones')
 def cantidad_sanciones(id_torneo: int):
@@ -25,6 +25,8 @@ def cantidad_sanciones(id_torneo: int):
 
     return resultado
 
+
+# Obtener una tabla con la cantidad de goles que el equipo hizo y recibio por torneo
 #@app.get('/metricas/goles_favor')
 def goles_a_favor(id_torneo: int):
     sql = """
@@ -55,4 +57,29 @@ def goles_a_favor(id_torneo: int):
 
     return resultado
 
+#Metrica extra, promedio de goles por partido
+#@app.get('/metricas/promedio_equipo')
+def promedio_por_equipo(id_torneo:int):
+    sql = """
+        SELECT
+            e.id_equipo,
+            e.nombre,
+            COALESCE(ROUND(AVG(
+                CASE
+                    WHEN rp.id_equipo_local = e.id_equipo THEN rp.goles_local ELSE rp.goles_visitante END
+                ), 2), 0) AS promedio_goles
+            FROM equipo e
+            LEFT JOIN resultado_partido rp
+                ON rp.id_equipo_local = e.id_equipo
+                OR rp.id_equipo_visitante = e.id_equipo
+            WHERE e.id_torneo = %s
+            GROUP BY e.id_equipo, e.nombre
+            ORDER BY promedio_goles DESC
+    """
 
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute(sql, (id_torneo,))
+    resultado = cursor.fetchall()
+    cursor.close()
+
+    return resultado
