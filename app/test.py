@@ -1,10 +1,4 @@
-import app.metricas.torneo as torneo;
-import app.metricas.equipo as equipo;
-import app.metricas.jugadores as jugadores;
-import app.metricas.turnos as turnos
-import app.metricas.canchas as canchas
-import app.metricas.goles as goles
-import app.metricas.puntos as puntos
+from app.metricas import torneo, equipo, jugadores, turnos, canchas, goles, puntos
 
 porcentaje_partidas = torneo.porcentaje_partidos(1)
 cantidad_sanciones = equipo.cantidad_sanciones(1)

@@ -1,4 +1,4 @@
-from app.metricas.conexion import conexion
+from ..conexion import conexion
 
 #@app.get('/metricas/cantidad_sanciones')
 def cantidad_sanciones(id_torneo: int):

@@ -1,6 +1,9 @@
 import os
 import threading
 import mysql.connector
+from dotenv import load_dotenv
+
+load_dotenv()
 
 USUARIOS = {
     "administrador": "DB_ADMIN",

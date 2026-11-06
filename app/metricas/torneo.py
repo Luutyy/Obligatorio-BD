@@ -1,4 +1,4 @@
-from app.metricas.conexion import conexion
+from ..conexion import conexion
 
 #@app.get('/metricas/porcentaje_partidos')
 def porcentaje_partidos(id_torneo: int):
