@@ -1,124 +1,113 @@
 from fastapi import Depends, HTTPException
-from mysql.connector import IntegrityError
-from pydantic import BaseModel
+from mysql.connector import Error as MySQLError, IntegrityError, errorcode
+from pydantic import BaseModel, Field
+
 from app.app import app
 from app.auth import SOLO_ADMIN, db_para_usuario
 
 
-class Gol(BaseModel):
-    id_gol: int
-    id_partido: int
-    ci_jugador: int
-    minuto: int
-    autogol: int
+class Equipo(BaseModel):
+    nombre: str = Field(min_length=1, max_length=100)
+    id_torneo: int = Field(gt=0)
+    id_facultad: int = Field(gt=0)
+    ci_capitan: str = Field(min_length=1, max_length=20)
 
 
-#POST PARA DAR DE ALTA UN GOL
-@app.post("/gol", status_code=201)
-def registrar_gol(
-    gol: Gol,
+def _error_integridad(e: IntegrityError) -> HTTPException:
+    """Traduce el error de MySQL a una respuesta HTTP según su causa real."""
+    if e.errno == errorcode.ER_DUP_ENTRY:  # 1062
+        return HTTPException(409, "Ya existe un equipo con esos datos")
+    if e.errno == errorcode.ER_NO_REFERENCED_ROW_2:  # 1452
+        return HTTPException(409, "El torneo, la facultad o el capitán no son válidos")
+    if e.errno == errorcode.ER_ROW_IS_REFERENCED_2:  # 1451
+        return HTTPException(
+            409, "No se puede eliminar el equipo porque tiene registros relacionados"
+        )
+    return HTTPException(409, "Los datos violan una restricción de la base de datos")
+
+
+# POST PARA DAR DE ALTA UN EQUIPO
+@app.post("/equipo", status_code=201)
+def registrar_equipo(
+    equipo: Equipo,
     user=Depends(SOLO_ADMIN),
-    conexion=Depends(db_para_usuario)
+    conexion=Depends(db_para_usuario),
 ):
-
     cursor = conexion.cursor()
-
     sql = """
-        INSERT INTO gol
-        (id_partido, ci_jugador, minuto, autogol)
+        INSERT INTO equipo (nombre, id_torneo, id_facultad, ci_capitan)
         VALUES (%s, %s, %s, %s)
     """
-
-    valores = (
-        gol.id_partido,
-        gol.ci_jugador,
-        gol.minuto,
-        gol.autogol
-    )
+    valores = (equipo.nombre, equipo.id_torneo, equipo.id_facultad, equipo.ci_capitan)
 
     try:
         cursor.execute(sql, valores)
         conexion.commit()
-
         return {
-            "mensaje": "Gol registrado correctamente",
-            "id_gol": cursor.lastrowid
+            "mensaje": "Equipo registrado correctamente",
+            "id_equipo": cursor.lastrowid,
         }
-
-    except IntegrityError:
+    except IntegrityError as e:
         conexion.rollback()
-        raise HTTPException(
-            status_code=409,
-            detail="Algun dato no es válido"
-        )
-
+        raise _error_integridad(e)
+    except MySQLError:
+        conexion.rollback()
+        raise HTTPException(500, "Error interno de base de datos")
     finally:
         cursor.close()
 
-#DELETE PARA DAR DE BAJA GOLS
-@app.delete("/gol/{id_gol}")
-def eliminar_gol(
-    id_gol: int,
+
+# DELETE PARA DAR DE BAJA EQUIPOS
+@app.delete("/equipo/{id_equipo}")
+def eliminar_equipo(
+    id_equipo: int,
     user=Depends(SOLO_ADMIN),
-    conexion=Depends(db_para_usuario)
+    conexion=Depends(db_para_usuario),
 ):
-
     cursor = conexion.cursor()
-
-    sql = """
-        DELETE FROM gol
-        WHERE id_gol = %s
-    """
 
     try:
-        cursor.execute(sql, (id_gol,))
+        cursor.execute("DELETE FROM equipo WHERE id_equipo = %s", (id_equipo,))
 
         if cursor.rowcount == 0:
-            raise HTTPException(
-                status_code=404,
-                detail="Gol no encontrado"
-            )
+            conexion.rollback()
+            raise HTTPException(404, "Equipo no encontrado")
 
         conexion.commit()
-
-        return {
-            "mensaje": "Gol eliminado correctamente"
-        }
-
-    except IntegrityError:
+        return {"mensaje": "Equipo eliminado correctamente"}
+    except IntegrityError as e:
         conexion.rollback()
-        raise HTTPException(
-            status_code=409,
-            detail="No se puede eliminar el gol porque tiene registros relacionados"
-        )
-
+        raise _error_integridad(e)
+    except MySQLError:
+        conexion.rollback()
+        raise HTTPException(500, "Error interno de base de datos")
     finally:
         cursor.close()
 
-#PUT PARA MODIFICAR GOL
-@app.put("/gol/{id_gol}")
-def modificar_gol(
-    id_gol: int,
-    gol: Gol,
+
+# PUT PARA MODIFICAR EQUIPO
+@app.put("/equipo/{id_equipo}")
+def modificar_equipo(
+    id_equipo: int,
+    equipo: Equipo,
     user=Depends(SOLO_ADMIN),
-    conexion=Depends(db_para_usuario)
+    conexion=Depends(db_para_usuario),
 ):
-
     cursor = conexion.cursor()
-
     sql = """
-        UPDATE gol
-        SET ci_jugador = %s,
-            minuto = %s,
-            autogol = %s,
-        WHERE id_gol = %s
+        UPDATE equipo
+        SET nombre = %s,
+            id_torneo = %s,
+            id_facultad = %s,
+            ci_capitan = %s
+        WHERE id_equipo = %s
     """
-    
     valores = (
-        gol.ci_jugador,
-        gol.minuto,
-        gol.autogol,
-        id_gol
+        equipo.nombre,
+        equipo.id_torneo,
+        equipo.id_facultad,
+        equipo.ci_capitan,
+        id_equipo,
     )
 
     try:
@@ -126,28 +115,19 @@ def modificar_gol(
 
         if cursor.rowcount == 0:
             cursor.execute(
-                "SELECT id_gol FROM gol WHERE id_gol = %s",
-                (id_gol,)
+                "SELECT 1 FROM equipo WHERE id_equipo = %s", (id_equipo,)
             )
-
             if cursor.fetchone() is None:
-                raise HTTPException(
-                    status_code=404,
-                    detail="Gol no encontrado"
-                )
+                conexion.rollback()
+                raise HTTPException(404, "Equipo no encontrado")
 
         conexion.commit()
-
-        return {
-            "mensaje": "Gol modificado correctamente"
-        }
-
-    except IntegrityError:
+        return {"mensaje": "Equipo modificado correctamente"}
+    except IntegrityError as e:
         conexion.rollback()
-        raise HTTPException(
-            status_code=409,
-            detail="El torneo, la facultad o el capitán no son válidos"
-        )
-
+        raise _error_integridad(e)
+    except MySQLError:
+        conexion.rollback()
+        raise HTTPException(500, "Error interno de base de datos")
     finally:
         cursor.close()
