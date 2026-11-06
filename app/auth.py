@@ -1,12 +1,13 @@
 import os
 from datetime import datetime, timedelta, timezone
- 
 import bcrypt
 import jwt
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from app.conexion import get_conexion
 from dotenv import load_dotenv
+import bcrypt
 
 load_dotenv()
 router = APIRouter()
@@ -17,7 +18,7 @@ class LoginIn(BaseModel):
     correo: str
     contrasena: str
  
- 
+
 @router.post("/login")
 def login(datos: LoginIn):
     conexion = get_conexion(None)
@@ -45,13 +46,20 @@ def login(datos: LoginIn):
     return {"token": token, "rol": filas[0]["rol"]}
  
  
-def usuario_actual(authorization: str = Header(None)):
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Falta el token")
+security = HTTPBearer()
+
+def usuario_actual(credentials: HTTPAuthorizationCredentials = Depends(security)):
     try:
-        return jwt.decode(authorization[7:], SECRET, algorithms=["HS256"])
+        return jwt.decode(
+            credentials.credentials,
+            SECRET,
+            algorithms=["HS256"]
+        )
     except jwt.PyJWTError:
-        raise HTTPException(status_code=401, detail="Token inválido o vencido")
+        raise HTTPException(
+            status_code=401,
+            detail="Token inválido o vencido"
+        )
  
  
 def requiere_rol(*roles):
