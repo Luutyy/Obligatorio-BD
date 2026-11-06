@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import Depends, HTTPException
 from mysql.connector import IntegrityError
 from pydantic import BaseModel
@@ -10,6 +11,7 @@ class Jugador(BaseModel):
     apellido: str
     ci: str
     email: str
+    fecha_nacimiento: date
     id_facultad: int
     tipo: str
 
@@ -25,8 +27,8 @@ def registrar_jugador(
 
     sql = """
         INSERT INTO jugador
-        (nombre, apellido, ci, email, id_facultad, tipo)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        (nombre, apellido, ci, email, fecha_nacimiento, id_facultad, tipo)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 
     valores = (
@@ -34,6 +36,7 @@ def registrar_jugador(
         jugador.apellido,
         jugador.ci,
         jugador.email,
+        jugador.fecha_nacimiento,
         jugador.id_facultad,
         jugador.tipo
     )
