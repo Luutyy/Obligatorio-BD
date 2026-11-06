@@ -1,10 +1,9 @@
-
 from fastapi import Depends, HTTPException
 from mysql.connector import IntegrityError
 from pydantic import BaseModel
 
-from app.app import app
-from app.auth import ADMIN_Y_PLANILLERO, db_para_usuario
+from backend.app import app
+from backend.auth import ADMIN_Y_PLANILLERO, db_para_usuario
 
 
 # MODELO DE PLANILLA

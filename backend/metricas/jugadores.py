@@ -1,5 +1,5 @@
 from ..conexion import conexion
-from app.app import app
+from backend.app import app
 
 @app.get('/metricas/jugadores_sin_plantilla')
 def jugadores_sin_plantilla(id_torneo: int):

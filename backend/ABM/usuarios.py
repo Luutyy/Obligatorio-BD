@@ -4,9 +4,8 @@ from mysql.connector import IntegrityError
 from pydantic import BaseModel
 from typing import Literal
 import bcrypt
-
-from app.app import app
-from app.auth import SOLO_ADMIN, db_para_usuario
+from backend.app import app
+from backend.auth import SOLO_ADMIN, db_para_usuario
 
 
 class Usuario(BaseModel):

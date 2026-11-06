@@ -1,5 +1,5 @@
 from ..conexion import conexion
-from app.app import app
+from backend.app import app
 
 @app.get('/metricas/canchas')
 def canchas_mas_usadas():

@@ -1,156 +1,132 @@
 from fastapi import Depends, HTTPException
 from mysql.connector import IntegrityError
 from pydantic import BaseModel
-from app.app import app
-from app.auth import SOLO_ADMIN, db_para_usuario
-
+from backend.app import app
+from backend.auth import SOLO_ADMIN, db_para_usuario
 
 class Sancion(BaseModel):
-    id_sancion: str
     ci_jugador: int
     id_torneo: int
     motivo: str
-    numero_fecha: int
+    numero_fecha_inicio: int
+    cantidad_fechas: int
 
-
-
-#POST PARA DAR DE ALTA UNA SANCION
-@app.post("/sancion", status_code=201)
-def registrar_CANCHA(
+# POST: REGISTRAR UNA SANCION
+@app.post("/sanciones", status_code=201)
+def registrar_sancion(
     sancion: Sancion,
     user=Depends(SOLO_ADMIN),
     conexion=Depends(db_para_usuario)
 ):
-
     cursor = conexion.cursor()
-
     sql = """
-        INSERT INTO sancion
-        (id_sancion, ci_jugador, id_torneo, motivo, numero_fecha)
+        INSERT INTO sancion_jugador
+        (ci_jugador, id_torneo, motivo, numero_fecha_inicio, cantidad_fechas)
         VALUES (%s, %s, %s, %s, %s)
     """
-
     valores = (
-        sancion.id_sancion,
         sancion.ci_jugador,
         sancion.id_torneo,
         sancion.motivo,
-        sancion.numero_fecha
+        sancion.numero_fecha_inicio,
+        sancion.cantidad_fechas
     )
-
     try:
         cursor.execute(sql, valores)
         conexion.commit()
-
         return {
-            "mensaje": "sancion registrado correctamente",
+            "mensaje": "Sanción registrada correctamente",
             "id_sancion": cursor.lastrowid
         }
-
     except IntegrityError:
         conexion.rollback()
         raise HTTPException(
             status_code=409,
-            detail="Alguno de los atributos no es válido"
+            detail="El jugador o el torneo no existen, o alguno de los datos no es válido"
         )
-
     finally:
         cursor.close()
 
-#DELETE PARA DAR DE BAJA UNA SANCION
-@app.delete("/sancion/{id_sancion}")
+
+# DELETE: ELIMINAR UNA SANCION
+@app.delete("/sanciones/{id_sancion}")
 def eliminar_sancion(
     id_sancion: int,
     user=Depends(SOLO_ADMIN),
     conexion=Depends(db_para_usuario)
 ):
-
     cursor = conexion.cursor()
-
-    sql = """
-        DELETE FROM sancion
-        WHERE id_sancion = %s
-    """
-
     try:
-        cursor.execute(sql, (id_sancion,))
-
+        cursor.execute(
+            "DELETE FROM sancion_jugador WHERE id_sancion = %s",
+            (id_sancion,)
+        )
         if cursor.rowcount == 0:
             raise HTTPException(
                 status_code=404,
-                detail="sancion no encontrado"
+                detail="Sanción no encontrada"
             )
-
         conexion.commit()
-
         return {
-            "mensaje": "sancion eliminado correctamente"
+            "mensaje": "Sanción eliminada correctamente"
         }
-
     except IntegrityError:
         conexion.rollback()
         raise HTTPException(
             status_code=409,
-            detail="No se puede eliminar el sancion porque tiene registros relacionados"
+            detail="No se puede eliminar la sanción porque tiene registros relacionados"
         )
-
     finally:
         cursor.close()
 
-#PUT PARA MODIFICAR UNA SANCION
-@app.put("/sancion/{id_sancion}")
+
+# PUT: MODIFICAR UNA SANCION
+@app.put("/sanciones/{id_sancion}")
 def modificar_sancion(
     id_sancion: int,
     sancion: Sancion,
     user=Depends(SOLO_ADMIN),
     conexion=Depends(db_para_usuario)
 ):
-
     cursor = conexion.cursor()
     sql = """
-        UPDATE sancion
+        UPDATE sancion_jugador
         SET ci_jugador = %s,
             id_torneo = %s,
             motivo = %s,
-            numero_fecha = %s
+            numero_fecha_inicio = %s,
+            cantidad_fechas = %s
         WHERE id_sancion = %s
     """
-
     valores = (
         sancion.ci_jugador,
         sancion.id_torneo,
         sancion.motivo,
-        sancion.numero_fecha,
+        sancion.numero_fecha_inicio,
+        sancion.cantidad_fechas,
         id_sancion
     )
-
     try:
         cursor.execute(sql, valores)
-
         if cursor.rowcount == 0:
             cursor.execute(
-                "SELECT id_sancion FROM sancion WHERE id_sancion = %s",
+                "SELECT id_sancion FROM sancion_jugador WHERE id_sancion = %s",
                 (id_sancion,)
             )
-
             if cursor.fetchone() is None:
                 raise HTTPException(
                     status_code=404,
-                    detail="sancion no encontrado"
+                    detail="Sanción no encontrada"
                 )
-
         conexion.commit()
-
         return {
-            "mensaje": "sancion modificado correctamente"
+            "mensaje": "Sanción modificada correctamente"
         }
-
     except IntegrityError:
         conexion.rollback()
         raise HTTPException(
             status_code=409,
-            detail="Alguno de los atributos no es válido"
+            detail="El jugador o el torneo no existen, o alguno de los datos no es válido"
         )
-
     finally:
         cursor.close()

@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException
-from app.auth import SOLO_ADMIN, ADMIN_Y_PLANILLERO, db_para_usuario
-from app.app import app
+from backend.auth import SOLO_ADMIN, ADMIN_Y_PLANILLERO, db_para_usuario
+from backend.app import app
 
 #Admin y planillero
 @app.get("/facultades")

@@ -5,7 +5,7 @@ import jwt
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
-from app.conexion import get_conexion
+from backend.conexion import get_conexion
 from dotenv import load_dotenv
 import bcrypt
 

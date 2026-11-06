@@ -1,4 +1,4 @@
-from app.app import app
+from backend.app import app
 from ..conexion import conexion
 
 @app.get('/metricas/puntos_fair_play')

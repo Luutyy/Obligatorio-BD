@@ -881,7 +881,6 @@ INSERT INTO equipo_jugador_torneo (id_equipo, ci_jugador, id_torneo, numero_cami
 (5, 125, 1, 1), (5, 126, 1, 2), (5, 127, 1, 3), (5, 128, 1, 4), (5, 129, 1, 5), (5, 130, 1, 6),
 (6, 131, 1, 1), (6, 132, 1, 2), (6, 133, 1, 3), (6, 134, 1, 4), (6, 135, 1, 5), (6, 136, 1, 6);
 
-# Liga a una rueda con 6 equipos = 5 fechas (15 partidos). Fechas 1 a 3 jugadas, 4 y 5 pendientes.
 INSERT INTO partido (id_partido, id_torneo, numero_fecha, id_equipo_local, id_equipo_visitante, dia, id_turno, nombre_cancha, id_complejo, estado) VALUES
 (1, 1, 1, 1, 6, '2026-11-01', 1, 'Cancha 1', 1, 'programado'),
 (2, 1, 1, 2, 5, '2026-11-01', 1, 'Cancha 2', 1, 'programado'),
@@ -899,7 +898,6 @@ INSERT INTO partido (id_partido, id_torneo, numero_fecha, id_equipo_local, id_eq
 (14, 1, 5, 3, 6, '2026-11-12', 2, 'Cancha 2', 1, 'cancelado'),
 (15, 1, 5, 4, 5, '2026-11-12', 3, 'Cancha 1', 2, 'programado');
 
-# Planilla de los partidos 1 a 9: jugadores con camiseta 1 a 5 de cada equipo
 INSERT INTO planilla_partido (id_partido, ci_jugador, id_equipo)
 SELECT p.id_partido, ej.ci_jugador, ej.id_equipo
 FROM partido p
@@ -908,7 +906,6 @@ JOIN equipo_jugador_torneo ej
 WHERE p.id_partido <= 9
   AND ej.numero_camiseta <= 5;
 
-# Sancion disciplinaria (el jugador 106 no figura en ninguna planilla)
 INSERT INTO sancion_jugador (ci_jugador, id_torneo, motivo, numero_fecha_inicio, cantidad_fechas) VALUES
 (106, 1, 'disciplinaria', 2, 2);
 
@@ -942,8 +939,6 @@ INSERT INTO gol (id_gol, id_partido, ci_jugador, minuto, autogol) VALUES
 (27, 9, 108, 21, FALSE),
 (28, 9, 134, 35, FALSE);
 
-# Las sanciones automaticas se generan solas con estas tarjetas:
-# el 102 acumula 3 amarillas (partidos 1, 4 y 7) y el 122 y el 111 reciben roja
 INSERT INTO tarjeta (id_tarjeta, id_partido, ci_jugador, minuto, color) VALUES
 (1, 1, 102, 18, 'amarilla'),
 (2, 1, 131, 23, 'amarilla'),
