@@ -1,6 +1,7 @@
 from ..conexion import conexion
+from app.app import app
 
-#@app.get('/metricas/promedio_goles_torneo')
+@app.get('/metricas/promedio_goles_torneo')
 def goles_por_torneo():
     sql = """
         SELECT p.id_torneo,AVG(gp.total_goles) AS promedio_goles
@@ -18,7 +19,7 @@ def goles_por_torneo():
 
     return resultado
 
-#@app.get('/metricas/promedio_goles_fecha')
+@app.get('/metricas/promedio_goles_fecha')
 def goles_por_fechas():
     sql = """
         SELECT

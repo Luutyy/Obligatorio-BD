@@ -1,6 +1,7 @@
 from ..conexion import conexion
+from app.app import app
 
-#@app.get('/metricas/porcentaje_partidos')
+@app.get('/metricas/porcentaje_partidos')
 def porcentaje_partidos(id_torneo: int):
     sql = """
         SELECT
@@ -36,6 +37,7 @@ def porcentaje_partidos(id_torneo: int):
 
 
 # Metrica agregada: ver los resultados de la ultima fecha
+@app.get('/metricas/ultima-fecha')
 def partidos_ultima_fecha(id_torneo: int):
     sql = """
         SELECT 

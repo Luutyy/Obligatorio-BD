@@ -1,7 +1,8 @@
 from ..conexion import conexion
+from app.app import app
 
 
-#@app.get('/metricas/turnos')
+@app.get('/metricas/turnos')
 def turnos_mas_utilizados():
     sql = """
         SELECT CONCAT(t.hora_inicio,' - ', t.hora_fin) AS turno, COUNT(*) as veces_usado

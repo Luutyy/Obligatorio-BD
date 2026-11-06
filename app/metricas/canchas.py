@@ -1,6 +1,7 @@
 from ..conexion import conexion
+from app.app import app
 
-#@app.get('/metricas/canchas')
+@app.get('/metricas/canchas')
 def canchas_mas_usadas():
     sql = """
         SELECT CONCAT(p.nombre_cancha,' - ', c.nombre_complejo) AS cancha, COUNT(*) as veces_usada
