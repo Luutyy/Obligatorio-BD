@@ -796,10 +796,6 @@ END $$
 
 DELIMITER ;
 
-# ======================= DATOS DE PRUEBA =======================
-# El torneo se carga en inscripcion (los triggers lo exigen para equipos y planteles)
-# y los partidos se cargan como programado: se pasan a jugado al final.
-
 INSERT INTO facultad (id_facultad, nombre) VALUES
 (1, 'Facultad de Ingenieria'),
 (2, 'Facultad de Ciencias Empresariales'),
@@ -810,9 +806,9 @@ INSERT INTO torneo (id_torneo, nombre, anio, semestre, fecha_inicio, fecha_fin, 
 (1, 'Copa Universitaria', 2026, '2', '2026-11-01', '2026-11-30', 'inscripcion');
 
 INSERT INTO login (correo, contrasena, rol) VALUES
-('admin@ucu.edu.uy', 'admin123', 'administrador'),
-('planillero1@ucu.edu.uy', 'planilla123', 'planillero'),
-('planillero2@ucu.edu.uy', 'planilla456', 'planillero');
+('admin@ucu.edu.uy', '$2b$12$CbPV7.b/01UKBSWLq54FL.rD8oFUmASfB/JSLUBXQP85I0qqwnmOe', 'administrador'),
+('planillero1@ucu.edu.uy', '$2b$12$Ri7W4eKb.BZEt92PQDN39e8CUW35fkID1T4WAZCR7BdDdPw8g4MyS', 'planillero'),
+('planillero2@ucu.edu.uy', '$2b$12$2sHBDtXH2l/kJwVonHJ7cu2wV.grytgMdMROjlk.fleKhi2PLjq3O', 'planillero');
 
 INSERT INTO jugador (ci, nombre, apellido, email, fecha_nacimiento, id_facultad, tipo) VALUES
 (101, 'Juan', 'Perez', 'juan@gmail.com', '2002-03-10', 1, 'grado'),
