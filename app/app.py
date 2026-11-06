@@ -6,3 +6,4 @@ def inicio():
     return {"mensaje": "API funcionando correctamente"}
 
 from app.metricas import torneo, equipo, jugadores, turnos, canchas, goles, puntos
+from app.ABM import equipo, jugador, partido

@@ -1,102 +1,154 @@
+from fastapi import Depends, HTTPException
+from mysql.connector import IntegrityError
 from pydantic import BaseModel
-from database import obtener_conexion
-from datetime import date
-from typing import Optional
-from api import api
+from app.app import app
+from app.auth import SOLO_ADMIN, db_para_usuario
+
 
 class Equipo(BaseModel):
     nombre: str
     id_torneo: int
     id_facultad: int
-    ci_capitan: int
+    ci_capitan: str
+
 
 #POST PARA DAR DE ALTA UN EQUIPO
-@app.post("/equipo")
-def registrar_jugador(equipo: Equipo):
+@app.post("/equipo", status_code=201)
+def registrar_equipo(
+    equipo: Equipo,
+    user=Depends(SOLO_ADMIN),
+    conexion=Depends(db_para_usuario)
+):
 
-    conexion = obtener_conexion()
     cursor = conexion.cursor()
 
     sql = """
         INSERT INTO equipo
-        (id_equipo, nombre, id_torneo, id_facultad, ci_capitan) VALUES
-        (%s, %s, %s, %s, %s)
+        (nombre, id_torneo, id_facultad, ci_capitan)
+        VALUES (%s, %s, %s, %s)
     """
-    valores = (equipo.nombre, equipo.nombre, equipo.id_torneo, equipo.id_facultad, ci_capitan)
+
+    valores = (
+        equipo.nombre,
+        equipo.id_torneo,
+        equipo.id_facultad,
+        equipo.ci_capitan
+    )
 
     try:
         cursor.execute(sql, valores)
         conexion.commit()
 
-        id_generado = cursor.lastrowid
-
         return {
             "mensaje": "Equipo registrado correctamente",
-            "id_equipo": id_generado
+            "id_equipo": cursor.lastrowid
         }
 
-    except mysql.connector.IntegrityError:
+    except IntegrityError:
         conexion.rollback()
         raise HTTPException(
             status_code=409,
-            detail="El documento ya existe o el equipo no es válido"
+            detail="El torneo, la facultad o el capitán no son válidos"
         )
 
     finally:
         cursor.close()
-        conexion.close()
 
-#DELETE PARA DAR DE BAJA JUGADORES
+#DELETE PARA DAR DE BAJA EQUIPOS
 @app.delete("/equipo/{id_equipo}")
-def eliminar_equipo(id_equipo: int):
-    conexion = obtener_conexion()
+def eliminar_equipo(
+    id_equipo: int,
+    user=Depends(SOLO_ADMIN),
+    conexion=Depends(db_para_usuario)
+):
+
     cursor = conexion.cursor()
 
+    sql = """
+        DELETE FROM equipo
+        WHERE id_equipo = %s
+    """
+
     try:
-        sql = """
-            DELETE FROM jugador
-            WHERE id_equipo = %s
-        """
         cursor.execute(sql, (id_equipo,))
-        conexion.commit()
+
         if cursor.rowcount == 0:
             raise HTTPException(
                 status_code=404,
                 detail="Equipo no encontrado"
             )
+
+        conexion.commit()
+
         return {
             "mensaje": "Equipo eliminado correctamente"
         }
 
+    except IntegrityError:
+        conexion.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="No se puede eliminar el equipo porque tiene registros relacionados"
+        )
+
     finally:
         cursor.close()
-        conexion.close()
 
 #PUT PARA MODIFICAR EQUIPO
-@app.delete("/equipo/{id_equipo}")
-def modificar_equipo(id_equipo: int,equipo: Equipo):
-    conexion = obtener_conexion()
+@app.put("/equipo/{id_equipo}")
+def modificar_equipo(
+    id_equipo: int,
+    equipo: Equipo,
+    user=Depends(SOLO_ADMIN),
+    conexion=Depends(db_para_usuario)
+):
+
     cursor = conexion.cursor()
 
+    sql = """
+        UPDATE equipo
+        SET nombre = %s,
+            id_torneo = %s,
+            id_facultad = %s,
+            ci_capitan = %s
+        WHERE id_equipo = %s
+    """
+
+    valores = (
+        equipo.nombre,
+        equipo.id_torneo,
+        equipo.id_facultad,
+        equipo.ci_capitan,
+        id_equipo
+    )
+
     try:
-        sql = """
-            UPDATE equipo
-            SET nombre = %s,
-                id_torneo = %s,
-                id_facultad = %s,
-                ci_capitan = %s,
-        """
-        cursor.execute(sql, (id_equipo,))
-        conexion.commit()
+        cursor.execute(sql, valores)
+
         if cursor.rowcount == 0:
-            raise HTTPException(
-                status_code=404,
-                detail="Equipo no encontrado"
+            cursor.execute(
+                "SELECT id_equipo FROM equipo WHERE id_equipo = %s",
+                (id_equipo,)
             )
+
+            if cursor.fetchone() is None:
+                raise HTTPException(
+                    status_code=404,
+                    detail="Equipo no encontrado"
+                )
+
+        conexion.commit()
+
         return {
-            "mensaje": "Equipo modificaso correctamente"
+            "mensaje": "Equipo modificado correctamente"
         }
+
+    except IntegrityError:
+        conexion.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="El torneo, la facultad o el capitán no son válidos"
+        )
 
     finally:
         cursor.close()
-        conexion.close()
