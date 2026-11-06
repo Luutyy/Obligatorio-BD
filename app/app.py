@@ -7,4 +7,4 @@ app.include_router(auth_router)
 
 from app.metricas import torneo, equipo, jugadores, turnos, canchas, goles, puntos
 from app.gets import complejosCanchas, equipos, facultad, jugadores, partidos, torneos, turnos
-from app.ABM import equipo, jugador, partido, cancha, usuarios, planilla
+from app.ABM import equipo, jugador, partido, cancha, usuarios, planilla, complejo, equipo_jugador_torneo, gol, sancion, tarjeta

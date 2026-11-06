@@ -1,6 +1,7 @@
 from datetime import date
 from fastapi import Depends, HTTPException
 from mysql.connector import IntegrityError
+from pydantic import BaseModel
 from app.app import app
 from app.auth import SOLO_ADMIN, db_para_usuario
 
@@ -102,9 +103,7 @@ def modificar_jugador(
     user=Depends(SOLO_ADMIN),
     conexion=Depends(db_para_usuario)
 ):
-
     cursor = conexion.cursor()
-
     sql = """
         UPDATE jugador
         SET nombre = %s,
@@ -125,24 +124,19 @@ def modificar_jugador(
         jugador.tipo,
         ci
     )
-
     try:
         cursor.execute(sql, valores)
-
         if cursor.rowcount == 0:
             cursor.execute(
                 "SELECT ci FROM jugador WHERE ci = %s",
                 (ci,)
             )
-
             if cursor.fetchone() is None:
                 raise HTTPException(
                     status_code=404,
                     detail="Jugador no encontrado"
                 )
-
         conexion.commit()
-
         return {
             "mensaje": "Jugador modificado correctamente"
         }
