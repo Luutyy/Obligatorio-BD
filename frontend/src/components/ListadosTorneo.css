@@ -1,0 +1,298 @@
+
+.listado-page {
+    min-height: 100vh;
+    background: #f3f6f4;
+    color: #26352c;
+}
+
+.listado-header {
+    background: #176b43;
+    color: white;
+    padding: 25px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.listado-header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.listado-header > a {
+    color: white;
+    text-decoration: none;
+}
+
+.listado-header button {
+    background: white;
+    color: #176b43;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.listado-header button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.listado-contenido {
+    padding: 30px 5%;
+}
+
+.listado-resumen {
+    margin-bottom: 20px;
+    font-size: 17px;
+}
+
+.buscador-listado {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px 15px;
+    border: 1px solid #cbd5ce;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.tabla-listado-container {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    overflow-x: auto;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.tabla-listado {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.tabla-listado th {
+    background: #e5f0e9;
+    color: #176b43;
+    text-align: left;
+    padding: 14px;
+}
+
+.tabla-listado td {
+    padding: 13px;
+    border-bottom: 1px solid #e8ece9;
+}
+
+.tabla-listado tr:hover {
+    background: #f5faf6;
+}
+
+.enlace-detalle {
+    color: #176b43;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.enlace-detalle:hover {
+    text-decoration: underline;
+}
+
+.listado-error {
+    color: #c62828;
+    background: #ffebee;
+    padding: 12px;
+    border-radius: 7px;
+}
+
+.selector-torneo-listado {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.selector-torneo-listado label {
+    font-weight: bold;
+}
+
+.selector-torneo-listado select {
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.fecha-card {
+    margin-bottom: 35px;
+}
+
+.fecha-card h2 {
+    color: #176b43;
+    border-bottom: 2px solid #c9dfd0;
+    padding-bottom: 10px;
+}
+
+.partidos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+.partido-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.partido-equipos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #176b43;
+    text-align: center;
+}
+
+.partido-equipos span {
+    flex: 1;
+    font-weight: bold;
+}
+
+.partido-equipos strong {
+    color: #888;
+}
+
+.partido-card p {
+    margin: 9px 0;
+    font-size: 14px;
+}
+
+.estado-partido {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e8edf0;
+    color: #455a64;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.estado-jugado {
+    background: #d9f1e1;
+    color: #176b43;
+}
+
+.estado-programado {
+    background: #e3edff;
+    color: #2454a6;
+}
+
+.estado-postergado {
+    background: #fff0d6;
+    color: #946000;
+}
+
+.estado-cancelado {
+    background: #ffdddd;
+    color: #a32222;
+}
+
+.partido-card .enlace-detalle {
+    display: block;
+    margin-top: 12px;
+}
+
+@media (max-width: 650px) {
+    .listado-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .listado-contenido {
+        padding: 20px 4%;
+    }
+}
+.facultades-grid,
+.equipos-facultad-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+    margin-top: 30px;
+}
+
+.facultad-card,
+.equipo-facultad-card {
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+    text-decoration: none;
+    color: #26332b;
+    border: 1px solid #e2e8e4;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.facultad-card:hover,
+.equipo-facultad-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+.facultad-icono,
+.equipo-icono {
+    font-size: 38px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.facultad-card h2,
+.equipo-facultad-card h2 {
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.facultad-enlace,
+.equipo-facultad-card a {
+    display: inline-block;
+    color: #21834b;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 12px;
+}
+
+.equipo-facultad-card p {
+    color: #647067;
+    margin-bottom: 10px;
+}
+
+.volver-link {
+    display: inline-block;
+    color: #21834b;
+    text-decoration: none;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.volver-link:hover {
+    text-decoration: underline;
+}
+
+.cantidad-resultados {
+    margin-top: 20px;
+    color: #647067;
+}
+
+.sin-resultados {
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    margin-top: 15px;
+}
