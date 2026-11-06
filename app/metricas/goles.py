@@ -1,4 +1,4 @@
-from conexion import conexion
+from app.metricas.conexion import conexion
 
 #@app.get('/metricas/promedio_goles_torneo')
 def goles_por_torneo():
