@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import Depends, HTTPException
 from app.auth import SOLO_ADMIN, ADMIN_Y_PLANILLERO, db_para_usuario
 from app.app import app
