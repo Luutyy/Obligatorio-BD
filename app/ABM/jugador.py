@@ -3,8 +3,7 @@ from pydantic import BaseModel
 from database import obtener_conexion
 from datetime import date
 from typing import Optional
-
-app = FastAPI()
+from api import api
 
 class Jugador(BaseModel):
     nombre: str
