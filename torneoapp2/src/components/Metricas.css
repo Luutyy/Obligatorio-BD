@@ -1,0 +1,104 @@
+.metricas-page {
+    padding: 30px;
+    min-height: 100vh;
+    background-color: #f4f5f7;
+}
+
+.metricas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.metricas-header h1 {
+    color: #222;
+}
+
+.metricas-header button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    background-color: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+.metricas-header button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.metrica-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.metrica-card h2 {
+    font-size: 18px;
+    color: #1e3a8a;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.tabla-container {
+    overflow-x: auto;
+}
+
+.tabla-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabla-container th,
+.tabla-container td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-container th {
+    background-color: #eef2ff;
+    color: #1e3a8a;
+}
+
+.tabla-container tr:hover {
+    background-color: #f8fafc;
+}
+
+.dato {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.dato strong {
+    margin-right: 8px;
+    color: #444;
+}
+
+.valor-simple {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.error {
+    color: #dc2626;
+    font-size: 14px;
+}
+
+.mensaje-carga {
+    text-align: center;
+    font-size: 18px;
+    padding: 40px;
+}
