@@ -5,9 +5,10 @@ import bcrypt
 import jwt
 from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel
- 
-from conexion import get_conexion
- 
+from app.conexion import get_conexion
+from dotenv import load_dotenv
+
+load_dotenv()
 router = APIRouter()
 SECRET = os.environ["JWT_SECRET"]
  
