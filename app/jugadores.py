@@ -47,3 +47,29 @@ def jugador_por_facultad_tipo():
     cursor.close()
 
     return resultado
+
+#@app.get('/metricas/goleadores')
+def goleadores(id_torneo: int):
+    sql = """
+        SELECT
+            CONCAT(j.nombre, ' ', j.apellido) AS nombre_completo,
+            j.ci,
+            COUNT(*) AS cantidad_goles
+        FROM torneo.gol g
+        JOIN torneo.jugador j
+            ON g.ci_jugador = j.ci
+        JOIN torneo.partido p
+            ON g.id_partido = p.id_partido
+        WHERE p.id_torneo = %s
+          AND g.autogol = FALSE
+        GROUP BY g.ci_jugador, j.nombre, j.apellido
+        ORDER BY cantidad_goles DESC
+        LIMIT 10;
+        """
+    
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute(sql, (id_torneo,))
+    resultado = cursor.fetchall()
+    cursor.close()
+
+    return resultado

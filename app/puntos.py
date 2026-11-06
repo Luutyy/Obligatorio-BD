@@ -16,3 +16,20 @@ def puntos_fair_play():
     cursor.close()
 
     return resultado
+
+#@app.get('/metricas/tabla_torneo')
+def tabla_torneo(id_torneo: int):
+    sql = """
+        SELECT e.id_equipo, e.nombre, SUM(pp.puntos) AS puntos_totales, e.id_torneo
+        FROM puntos_partido pp
+        JOIN equipo e ON pp.id_equipo=e.id_equipo
+        WHERE e.id_torneo = %s
+        GROUP BY id_equipo, e.id_torneo
+        ORDER BY e.id_torneo, puntos_totales DESC;
+    """
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute(sql,(id_torneo,))
+    resultado = cursor.fetchall()
+    cursor.close()
+
+    return resultado
