@@ -1,0 +1,110 @@
+
+.api-pagina {
+    min-height: 100vh;
+    background-color: #f4f6f9;
+    padding-bottom: 40px;
+}
+
+.api-header {
+    background-color: #142d25;
+    color: white;
+    padding: 25px 7%;
+}
+
+.api-header a {
+    color: #86efac;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.api-header h1 {
+    margin-top: 20px;
+    font-size: 30px;
+}
+
+.api-contenido {
+    width: 86%;
+    margin: 35px auto;
+}
+
+.api-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.api-tabla-container {
+    overflow-x: auto;
+}
+
+.api-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.api-tabla th {
+    background-color: #e5f3e9;
+    color: #14532d;
+    text-transform: capitalize;
+}
+
+.api-tabla th,
+.api-tabla td {
+    padding: 13px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.api-tabla tr:hover {
+    background-color: #f8fafc;
+}
+
+.api-objeto {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.api-dato {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.api-dato strong {
+    text-transform: capitalize;
+    color: #14532d;
+}
+
+.api-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.api-actualizar {
+    margin-top: 20px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 7px;
+    background-color: #16a34a;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.api-actualizar:hover {
+    background-color: #15803d;
+}
+
+.api-actualizar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

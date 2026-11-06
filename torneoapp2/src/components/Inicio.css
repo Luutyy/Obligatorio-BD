@@ -1,0 +1,249 @@
+
+.inicio {
+    min-height: 100vh;
+    background-color: #f4f6f9;
+    color: #1e293b;
+    font-family: Arial, sans-serif;
+}
+
+/* ENCABEZADO */
+
+.inicio-header {
+    height: 75px;
+    padding: 0 7%;
+    background-color: #142d25;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-torneo {
+    color: white;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-torneo span {
+    font-size: 28px;
+}
+
+.inicio-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.usuario-rol {
+    color: #d1fae5;
+    text-transform: capitalize;
+    font-weight: bold;
+}
+
+.boton-sesion {
+    background-color: #16a34a;
+    color: white;
+    text-decoration: none;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.boton-sesion:hover {
+    background-color: #15803d;
+}
+
+/* PRESENTACIÓN */
+
+.inicio-hero {
+    margin: 40px auto;
+    width: 86%;
+    min-height: 280px;
+    padding: 45px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    background: linear-gradient(120deg, #142d25, #236344);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    color: white;
+}
+
+.hero-contenido {
+    max-width: 600px;
+    z-index: 1;
+}
+
+.hero-etiqueta {
+    color: #86efac;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hero-contenido h1 {
+    font-size: 44px;
+    margin: 20px 0;
+}
+
+.hero-contenido h1 span {
+    color: #86efac;
+}
+
+.hero-contenido p {
+    color: #d1fae5;
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 550px;
+}
+
+.hero-boton {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 13px 22px;
+    background-color: #16a34a;
+    color: white;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+.hero-boton:hover {
+    background-color: #15803d;
+}
+
+.hero-icono {
+    font-size: 150px;
+    margin-right: 40px;
+    opacity: 0.9;
+}
+
+/* SECCIONES */
+
+.secciones {
+    width: 86%;
+    margin: 55px auto;
+}
+
+.secciones-titulo {
+    margin-bottom: 25px;
+}
+
+.secciones-titulo h2 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.secciones-titulo p {
+    color: #64748b;
+}
+
+.secciones-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.seccion-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #1e293b;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-bottom: 4px solid #16a34a;
+}
+
+.seccion-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.seccion-icono {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.seccion-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.seccion-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 65px;
+}
+
+.seccion-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #15803d;
+    font-weight: bold;
+}
+
+/* PIE DE PÁGINA */
+
+.inicio-footer {
+    margin-top: 70px;
+    padding: 25px;
+    text-align: center;
+    background-color: #142d25;
+    color: #d1fae5;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+    .secciones-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-icono {
+        font-size: 100px;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .inicio-header {
+        padding: 0 5%;
+    }
+
+    .logo-torneo {
+        font-size: 17px;
+    }
+
+    .inicio-hero {
+        width: 90%;
+        padding: 25px;
+        margin: 25px auto;
+    }
+
+    .hero-contenido h1 {
+        font-size: 32px;
+    }
+
+    .hero-icono {
+        display: none;
+    }
+
+    .secciones {
+        width: 90%;
+    }
+
+    .secciones-grid {
+        grid-template-columns: 1fr;
+    }
+}
