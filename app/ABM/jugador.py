@@ -1,7 +1,6 @@
 from datetime import date
 from fastapi import Depends, HTTPException
 from mysql.connector import IntegrityError
-from pydantic import BaseModel
 from app.app import app
 from app.auth import SOLO_ADMIN, db_para_usuario
 
