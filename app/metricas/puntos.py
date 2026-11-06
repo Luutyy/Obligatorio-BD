@@ -1,4 +1,4 @@
-from app.metricas.conexion import conexion
+from ..conexion import conexion
 
 #@app.get('/metricas/puntos_fair_play')
 def puntos_fair_play():
