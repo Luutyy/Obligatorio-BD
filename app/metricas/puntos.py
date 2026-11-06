@@ -1,6 +1,6 @@
-from ..conexion import conexion
+from app.app import app
 
-#@app.get('/metricas/puntos_fair_play')
+@app.get('/metricas/puntos_fair_play')
 def puntos_fair_play():
     sql = """
         SELECT e.nombre, e.id_equipo, SUM( CASE WHEN t.color='amarilla' THEN 1 WHEN t.color='roja' THEN 3 ELSE 0 END) as puntos,e.id_torneo
@@ -17,7 +17,7 @@ def puntos_fair_play():
 
     return resultado
 
-#@app.get('/metricas/tabla_torneo')
+@app.get('/metricas/tabla_torneo')
 def tabla_torneo(id_torneo: int):
     sql = """
         SELECT e.id_equipo, e.nombre, SUM(pp.puntos) AS puntos_totales, e.id_torneo

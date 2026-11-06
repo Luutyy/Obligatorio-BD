@@ -1,6 +1,7 @@
 from ..conexion import conexion
+from app.app import app
 
-#@app.get('/metricas/cantidad_sanciones')
+@app.get('/metricas/cantidad_sanciones')
 def cantidad_sanciones(id_torneo: int):
     sql = """
         SELECT
@@ -27,7 +28,7 @@ def cantidad_sanciones(id_torneo: int):
 
 
 # Obtener una tabla con la cantidad de goles que el equipo hizo y recibio por torneo
-#@app.get('/metricas/goles_favor')
+@app.get('/metricas/goles_favor')
 def goles_a_favor(id_torneo: int):
     sql = """
         SELECT
@@ -58,7 +59,7 @@ def goles_a_favor(id_torneo: int):
     return resultado
 
 #Metrica extra, promedio de goles por partido
-#@app.get('/metricas/promedio_equipo')
+@app.get('/metricas/promedio_equipo')
 def promedio_por_equipo(id_torneo:int):
     sql = """
         SELECT

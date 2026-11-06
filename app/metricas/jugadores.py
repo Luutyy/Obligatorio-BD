@@ -1,6 +1,7 @@
 from ..conexion import conexion
+from app.app import app
 
-#@app.get('/metricas/jugadores_sin_plantilla')
+@app.get('/metricas/jugadores_sin_plantilla')
 def jugadores_sin_plantilla(id_torneo: int):
     sql = """
         SELECT
@@ -29,7 +30,7 @@ def jugadores_sin_plantilla(id_torneo: int):
 
     return resultado
 
-#@app.get('/metricas/jugador_facultad_tipo')
+@app.get('/metricas/jugador_facultad_tipo')
 def jugador_por_facultad_tipo():
     sql = """
         SELECT 
@@ -48,7 +49,7 @@ def jugador_por_facultad_tipo():
 
     return resultado
 
-#@app.get('/metricas/goleadores')
+@app.get('/metricas/goleadores')
 def goleadores(id_torneo: int):
     sql = """
         SELECT
