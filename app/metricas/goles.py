@@ -34,3 +34,5 @@ def goles_por_fechas():
     cursor.execute(sql,)
     resultado = cursor.fetchall()
     cursor.close()#srfggsfdz
+
+    return resultado

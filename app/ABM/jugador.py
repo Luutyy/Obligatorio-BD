@@ -1,103 +1,159 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from database import obtener_conexion
 from datetime import date
-from typing import Optional
-from api import api
+from fastapi import Depends, HTTPException
+from mysql.connector import IntegrityError
+from pydantic import BaseModel
+from app.app import app
+from app.auth import SOLO_ADMIN, db_para_usuario
+
 
 class Jugador(BaseModel):
     nombre: str
     apellido: str
     ci: str
     email: str
+    fecha_nacimiento: date
     id_facultad: int
     tipo: str
 
-#POST PARA DAR DE ALTA UN JUGADOR
-@app.post("/jugadores")
-def registrar_jugador(jugador: Jugador, user=Depends(requiere_rol("administrador"))):
 
-    conexion = obtener_conexion()
+@app.post("/jugadores", status_code=201)
+def registrar_jugador(
+    jugador: Jugador,
+    user=Depends(SOLO_ADMIN),
+    conexion=Depends(db_para_usuario)
+):
+
     cursor = conexion.cursor()
 
     sql = """
         INSERT INTO jugador
-        (nombre, apellido, ci, fecha_nacimiento, id_equipo)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        (nombre, apellido, ci, email, fecha_nacimiento, id_facultad, tipo)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
-    valores = (jugador.nombre, jugador.apellido, jugador.ci, jugador.email, jugador.id_facultad, jugador.tipo)
+
+    valores = (
+        jugador.nombre,
+        jugador.apellido,
+        jugador.ci,
+        jugador.email,
+        jugador.fecha_nacimiento,
+        jugador.id_facultad,
+        jugador.tipo
+    )
 
     try:
         cursor.execute(sql, valores)
         conexion.commit()
+
         return {
-            "mensaje": "Jugador registrado correctamente",
+            "mensaje": "Jugador registrado correctamente"
         }
-    except mysql.connector.IntegrityError:
+
+    except IntegrityError:
         conexion.rollback()
         raise HTTPException(
             status_code=409,
-            detail="El documento ya existe o el equipo no es válido"
+            detail="El documento ya existe o la facultad no es válida"
         )
+
     finally:
         cursor.close()
-        conexion.close()
 
 #DELETE PARA DAR DE BAJA JUGADORES
 @app.delete("/jugadores/{ci}")
-def eliminar_jugador(ci: int):
-    conexion = obtener_conexion()
-    cursor = conexion.cursor()
+def eliminar_jugador(
+    ci: str,
+    user=Depends(SOLO_ADMIN),
+    conexion=Depends(db_para_usuario)
+):
 
+    cursor = conexion.cursor()
+    sql = """
+        DELETE FROM jugador
+        WHERE ci = %s
+
+    """
     try:
-        sql = """
-            DELETE FROM jugador
-            WHERE ci = %s
-        """
         cursor.execute(sql, (ci,))
-        conexion.commit()
         if cursor.rowcount == 0:
             raise HTTPException(
                 status_code=404,
                 detail="Jugador no encontrado"
             )
+        conexion.commit()
         return {
             "mensaje": "Jugador eliminado correctamente"
         }
 
+    except IntegrityError:
+        conexion.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="No se puede eliminar el jugador porque tiene registros relacionados"
+        )
+
     finally:
         cursor.close()
-        conexion.close()
 
 #PUT PARA MODIFICAR JUGADORES
-@app.delete("/jugadores/{ci}")
-def modificar_jugador(ci: int,jugador: Jugador):
-    conexion = obtener_conexion()
+@app.put("/jugadores/{ci}")
+def modificar_jugador(
+    ci: str,
+    jugador: Jugador,
+    user=Depends(SOLO_ADMIN),
+    conexion=Depends(db_para_usuario)
+):
+
     cursor = conexion.cursor()
 
+    sql = """
+        UPDATE jugador
+        SET nombre = %s,
+            apellido = %s,
+            ci = %s,
+            email = %s,
+            id_facultad = %s,
+            tipo = %s
+        WHERE ci = %s
+    """
+
+    valores = (
+        jugador.nombre,
+        jugador.apellido,
+        jugador.ci,
+        jugador.email,
+        jugador.id_facultad,
+        jugador.tipo,
+        ci
+    )
+
     try:
-        sql = """
-            UPDATE jugador
-            SET nombre = %s,
-                apellido = %s,
-                ci = %s,
-                email = %s,
-                fecha_nacimiento= %s,
-                id_facultad = %s,
-                tipo = %s,
-            WHERE ci = %s
-        """
-        cursor.execute(sql, (id_jugador,))
-        conexion.commit()
+        cursor.execute(sql, valores)
+
         if cursor.rowcount == 0:
-            raise HTTPException(
-                status_code=404,
-                detail="Jugador no encontrado"
+            cursor.execute(
+                "SELECT ci FROM jugador WHERE ci = %s",
+                (ci,)
             )
+
+            if cursor.fetchone() is None:
+                raise HTTPException(
+                    status_code=404,
+                    detail="Jugador no encontrado"
+                )
+
+        conexion.commit()
+
         return {
-            "mensaje": "Jugador eliminado correctamente"
+            "mensaje": "Jugador modificado correctamente"
         }
+
+    except IntegrityError:
+        conexion.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="La cédula ya existe o la facultad no es válida"
+        )
 
     finally:
         cursor.close()
-        conexion.close()
