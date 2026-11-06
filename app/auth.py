@@ -34,7 +34,7 @@ def login(datos: LoginIn):
     if filas:
         try:
             credenciales_ok = bcrypt.checkpw(datos.contrasena.encode(), filas[0]["contrasena"].encode())
-        except ValueError:  # la contraseña guardada no es un hash bcrypt
+        except ValueError:
             credenciales_ok = False
     if not credenciales_ok:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
