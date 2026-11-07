@@ -102,3 +102,21 @@
     font-size: 18px;
     padding: 40px;
 }
+.selector-torneo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.selector-torneo label {
+    font-weight: bold;
+}
+
+.selector-torneo select {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}

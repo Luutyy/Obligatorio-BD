@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Metricas.css";
@@ -237,4 +238,22 @@ export function Metricas() {
 
         </div>
     );
+=======
+import { Link } from "react-router-dom"
+
+async function getMetricas(codigo) {
+    console.log(`/api/countries/${codigo}`)
+    const response = await fetch(`/api/countries/${codigo}`);
+    return(await response.json());
+}
+
+export function Metricas(){
+
+    return(
+        <div>
+            <Link to={'/'}>⬅Volver</Link>
+            <p>Datos datos y mas datos...</p>
+        </div>
+    )
+>>>>>>> e65a8d13e8513362d9f07292a50b70127fdb32d2
 }
