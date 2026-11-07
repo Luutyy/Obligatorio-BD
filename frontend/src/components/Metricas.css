@@ -1,122 +1,108 @@
-.metricas-page {
+
+.metricas-container {
+    max-width: 1400px;
+    margin: 0 auto;
     padding: 30px;
-    min-height: 100vh;
-    background-color: #f4f5f7;
 }
 
 .metricas-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 30px;
 }
 
 .metricas-header h1 {
-    color: #222;
+    color: #21834b;
+    font-size: 32px;
+    margin-bottom: 8px;
 }
 
-.metricas-header button {
-    padding: 10px 16px;
-    border: none;
-    border-radius: 6px;
-    background-color: #2563eb;
-    color: white;
-    cursor: pointer;
+.metricas-header p {
+    color: #647067;
 }
 
-.metricas-header button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+.metricas-filtros {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.metricas-filtros label {
+    font-weight: 600;
+}
+
+.metricas-filtros select {
+    padding: 10px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    min-width: 250px;
 }
 
 .metricas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 20px;
 }
 
 .metrica-card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
+    background: white;
+    border: 1px solid #e2e8e4;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    min-width: 0;
 }
 
 .metrica-card h2 {
-    font-size: 18px;
-    color: #1e3a8a;
-    margin-top: 0;
-    margin-bottom: 20px;
+    color: #21834b;
+    font-size: 19px;
+    margin-bottom: 18px;
 }
 
-.tabla-container {
+.metrica-tabla {
+    width: 100%;
     overflow-x: auto;
 }
 
-.tabla-container table {
+.metrica-tabla table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
 }
 
-.tabla-container th,
-.tabla-container td {
+.metrica-tabla th,
+.metrica-tabla td {
     padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
     text-align: left;
-    border-bottom: 1px solid #ddd;
 }
 
-.tabla-container th {
-    background-color: #eef2ff;
-    color: #1e3a8a;
+.metrica-tabla th {
+    background: #f3f7f4;
+    color: #26332b;
 }
 
-.tabla-container tr:hover {
-    background-color: #f8fafc;
+.metrica-datos p {
+    margin-bottom: 10px;
+    color: #4b5563;
 }
 
-.dato {
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.dato strong {
-    margin-right: 8px;
-    color: #444;
-}
-
-.valor-simple {
-    font-size: 28px;
-    font-weight: bold;
-    color: #2563eb;
-}
-
-.error {
+.metricas-error,
+.metrica-error {
     color: #dc2626;
-    font-size: 14px;
 }
 
-.mensaje-carga {
-    text-align: center;
-    font-size: 18px;
-    padding: 40px;
-}
-.selector-torneo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 15px 0;
+.metricas-cargando {
+    color: #647067;
+    padding: 20px 0;
 }
 
-.selector-torneo label {
-    font-weight: bold;
-}
+@media (max-width: 600px) {
+    .metricas-container {
+        padding: 15px;
+    }
 
-.selector-torneo select {
-    padding: 10px 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: pointer;
+    .metricas-grid {
+        grid-template-columns: 1fr;
+    }
 }
