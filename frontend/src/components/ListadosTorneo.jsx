@@ -3,15 +3,13 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./ListadosTorneo.css";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = (
+    process.env.REACT_APP_API_URL || "http://localhost:8000"
+).replace(/\/+$/, "");
 
 // Función común para consultar el backend
 async function consultarAPI(endpoint) {
     const token = localStorage.getItem("token");
-
-    if (!token) {
-        throw new Error("No estás autenticado. Iniciá sesión nuevamente.");
-    }
 
     const response = await fetch(`${API_URL}${endpoint}`, {
         headers: {
@@ -19,16 +17,9 @@ async function consultarAPI(endpoint) {
         }
     });
 
-    if (response.status === 401) {
-        throw new Error("Sesión vencida o token inválido.");
-    }
-
-    if (response.status === 403) {
-        throw new Error("No tenés permisos para consultar esta información.");
-    }
-
     if (!response.ok) {
-        throw new Error(`Error HTTP ${response.status}`);
+        const mensaje = await response.text();
+        throw new Error(`Error ${response.status}: ${mensaje}`);
     }
 
     return response.json();

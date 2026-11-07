@@ -2,8 +2,9 @@
 import { useState, useEffect, useCallback } from "react";
 import "./Metricas.css";
 
-const API_URL = "http://127.0.0.1:8000";
-
+const API_URL = (
+    process.env.REACT_APP_API_URL || "http://localhost:8000"
+).replace(/\/+$/, "");
 async function consultarAPI(endpoint) {
     const token = localStorage.getItem("token");
 

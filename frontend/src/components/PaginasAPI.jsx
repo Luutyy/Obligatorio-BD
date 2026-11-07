@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./PaginasAPI.css";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = (
+    process.env.REACT_APP_API_URL || "http://localhost:8000"
+).replace(/\/+$/, "");
 
 // Componente que muestra cualquier respuesta JSON
 export function MostrarDatos({ datos }) {

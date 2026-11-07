@@ -7,6 +7,7 @@ import "./App.css";
 import { Inicio } from "./components/Inicio";
 import { Login } from "./components/Login/Login";
 import { Metricas } from "./components/Metricas";
+import { Administracion } from "./components/Administracion";
 
 // Listados
 import {
@@ -104,6 +105,10 @@ function App() {
                             />
                         }
                     />
+                    <Route
+    path="administracion"
+    element={<Administracion />}
+/>
 
                     {/* Complejos */}
                     <Route

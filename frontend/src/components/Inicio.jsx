@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from "react-router-dom";
 import "./Inicio.css";
 
@@ -8,6 +7,9 @@ export function Inicio() {
 
     const token = localStorage.getItem("token");
     const rol = localStorage.getItem("rol");
+
+    // Comprobamos si el usuario es administrador
+    const esAdmin = rol?.toLowerCase() === "administrador";
 
     function cerrarSesion() {
         localStorage.removeItem("token");
@@ -39,7 +41,13 @@ export function Inicio() {
             descripcion: "Explorá estadísticas y datos del torneo.",
             icono: "📊",
             ruta: "/Metricas"
-        }
+        },
+        ...(esAdmin ? [{
+            titulo: "Administración",
+            descripcion: "Gestioná los datos del sistema: jugadores, equipos, partidos y más.",
+            icono: "⚙️",
+            ruta: "/administracion"
+        }] : [])
     ];
 
     return (
